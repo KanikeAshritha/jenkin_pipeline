@@ -12,7 +12,9 @@ pipeline {
         stage('Setup') {
             steps {
                 sh '''
-                    python3 -m pip install --upgrade pip --break-system-packages
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip --break-system-packages
                     pip install -r requirements.txt
                 '''
             }
@@ -20,17 +22,24 @@ pipeline {
 
         stage('Lint') {
             steps {
+                sh '. venv/bin/activate'
                 sh 'flake8 app/ tests/'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'pytest --cov=app tests/'
+                sh '''
+                    . venv/bin/activate
+                    python3 -m pytest --cov=app tests/
+                '''
             }
             post {
                 always {
-                    sh 'pytest --cov=app --cov-report=xml tests/'
+                    sh '''
+                    . venv/bin/activate
+                    python3 -m pytest --cov=app --cov-report=xml tests/
+                    '''
                     junit 'pytest-results.xml'// Requires pytest-junit plugin
                 }
             }

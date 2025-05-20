@@ -3,8 +3,6 @@ from app.main import greet, add
 
 
 class TestMain(unittest.TestCase):
-
-
     def test_greet_default(self):
         self.assertEqual(greet(), "Hello, World!")
 

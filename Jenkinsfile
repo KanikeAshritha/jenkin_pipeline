@@ -12,9 +12,7 @@ pipeline {
         stage('Setup') {
             steps {
                 sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip --break-system-packages
+                    python3 -m pip install --upgrade pip --break-system-packages
                     pip install -r requirements.txt
                 '''
             }
@@ -28,11 +26,11 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'python3 -m pytest --cov=app tests/'
+                sh 'pytest --cov=app tests/'
             }
             post {
                 always {
-                    sh 'python3 -m pytest --cov=app --cov-report=xml tests/'
+                    sh 'pytest --cov=app --cov-report=xml tests/'
                     junit 'pytest-results.xml'// Requires pytest-junit plugin
                 }
             }

@@ -27,7 +27,7 @@ pipeline {
         stage('Lint') {
             steps {
                 sh '''
-                    . venv/bin/activate
+                    . $VENV/bin/activate
                     flake8 app/ tests/
                 '''
             }
@@ -37,7 +37,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
-                    . venv/bin/activate
+                    . $VENV/bin/activate
                     python3 -m pytest --cov=app --cov-report=xml --junitxml=pytest-results.xml tests/
                 '''
             }
@@ -52,8 +52,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    . venv/bin/activate
-                    pip install wheel
+                    . $VENV/bin/activate
                     python3 setup.py bdist_wheel
                 '''
             }

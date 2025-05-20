@@ -2,6 +2,10 @@
 pipeline {
     agent any
 
+    environment{
+         VENV = 'venv'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -12,9 +16,9 @@ pipeline {
         stage('Setup') {
             steps {
                 sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip --break-system-packages
+                    python3 -m venv $VENV
+                    . $VENV/bin/activate
+                    pip install --upgrade pip -
                     pip install -r requirements.txt
                 '''
             }

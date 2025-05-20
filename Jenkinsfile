@@ -22,8 +22,10 @@ pipeline {
 
         stage('Lint') {
             steps {
-                sh '. venv/bin/activate'
-                sh 'flake8 app/ tests/'
+                sh '''
+                    . venv/bin/activate
+                    flake8 app/ tests/
+                '''
             }
         }
 
@@ -47,8 +49,11 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'pip install wheel'
-                sh 'python3 setup.py bdist_wheel'
+                sh '''
+                    . venv/bin/activate
+                    pip install wheel
+                    python3 setup.py bdist_wheel
+                '''
             }
             post {
                 success {

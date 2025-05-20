@@ -34,16 +34,12 @@ pipeline {
             steps {
                 sh '''
                     . venv/bin/activate
-                    python3 -m pytest --cov=app tests/
+                    python3 -m pytest --cov=app --cov-report=xml --junitxml=pytest-results.xml tests/
                 '''
             }
             post {
                 always {
-                    sh '''
-                    . venv/bin/activate
-                    python3 -m pytest --cov=app --cov-report=xml tests/
-                    '''
-                    junit 'pytest-results.xml'// Requires pytest-junit plugin
+                    junit 'pytest-results.xml'
                 }
             }
         }
